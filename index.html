@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <?!= include('stylesheet') ?>
+  
+    <script>
+      function updateUrl(url) {
+//        var div = document.getElementById('output');
+        console.log(url);
+//        div.innerHTML = url.toString();
+      }
+      
+      function sendFormData(form) {
+        google.script.run
+          .withSuccessHandler(updateUrl)
+          .processForm(form)
+        
+        alert('Thank you for responding to our survey!');
+      }
+    </script>
+  </head>
+  <body>
+    <? var data = getData(); ?>
+    
+    <form id="myForm" method="post" onsubmit="sendFormData(this); return false;">
+  
+      <div class="questions">
+      <? for (var i = 1, j = 1; i < data.length; i++, j+=5) { ?>
+        <? var imgUrl = data[i][0] ?>
+        <? var title = data[i][1] ?>
+        <? var text = data[i][2] ?>
+        
+        <div class="question">
+          <img class="question__img" src=<?= imgUrl ?>>
+          <div class="question__body">
+            <div class="question__title"><?= title ?></div>
+            <div class="question__text"><?= text ?></div>
+            <input type="radio" required name=<?= 'mark-' + i ?> value="1" id=<?= 'mark-' + j ?>>
+            <input type="radio" required name=<?= 'mark-' + i ?> value="2" id=<?= 'mark-' + (j + 1) ?>>
+            <input type="radio" required name=<?= 'mark-' + i ?> value="3" id=<?= 'mark-' + (j + 2) ?>>
+            <input type="radio" required name=<?= 'mark-' + i ?> value="4" id=<?= 'mark-' + (j + 3) ?>>
+            <input type="radio" required name=<?= 'mark-' + i ?> value="5" id=<?= 'mark-' + (j + 4) ?>>
+          </div>
+        </div>
+        
+      <? } ?>
+      </div>
+
+      <input type="submit" value="Send" class="btn btn--submit"/>
+
+    </form>
+
+ <!--    <form id="myForm">
+   <input name="mark" type="radio" id="mark1" class="mark" value="1"/>
+   <label for="mark1">Check 1</label>
+   <br> 
+   
+   <input name="mark" type="radio" id="mark2" class="mark" value="2"/>
+   <label for="mark2">Check 2</label>
+   <br>
+ 
+   <label for="mark3" class="row-label">
+     <input type="radio" id="mark3" name="mark">
+     Check 3
+   </label>
+ 
+   <label for="mark4" class="row-label">
+     <input type="radio" id="mark4" name="mark">
+     Check 4
+   </label>
+   
+   <input type="button" value="Submit" class="btn btn--submit"
+     onclick="google.script.run
+       .withSuccessHandler(updateUrl)
+       .processForm(this.parentNode)" />
+ </form> -->
+    <div id="output"></div>
+ </body>
+</html>
